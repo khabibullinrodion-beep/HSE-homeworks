@@ -23,8 +23,15 @@ def filter_events_after(log_lines: list[str], user: str, after_time: str) -> lis
         filter_events_after(["10:00 alice login", "14:30 alice click"], "alice", "12:00")
         -> ["14:30 alice click"]
     """
-    # TODO: ваш код здесь
-    ...
+    hours, minutes = map(int, after_time.split(":"))
+    threshold = hours * 60 + minutes
+    result = []
+    for line in log_lines:
+        time, username, _event = line.split(maxsplit=2)
+        hours, minutes = map(int, time.split(":"))
+        if username == user and hours * 60 + minutes > threshold:
+            result.append(line)
+    return result
 
 
 if __name__ == "__main__":
